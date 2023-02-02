@@ -13,6 +13,18 @@ export function createUserService(user: UserModel): Promise<UserModel> {
 }
 
 /**
+ * Check if user exist
+ *
+ * @param id the id that needs to be fetched
+ * @returns user
+ */
+export function userExistByIdService(id: string): Promise<boolean> {
+  return new Promise<boolean>(function (resolve, reject) {
+    reject(new Error('No implemented'));
+  });
+}
+
+/**
  * Get all users
  *
  * @returns all users
