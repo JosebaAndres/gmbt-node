@@ -1,15 +1,9 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import * as express from 'express';
+import { getUserRoutes } from './app/routes/user-routes';
 
 const app = express();
 
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to test-api!' });
-});
+app.use('/api/user', getUserRoutes());
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
