@@ -12,14 +12,13 @@ import {
 export function createUserController(req: Request, res: Response) {
   createUserService(req.body)
     .then((response) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(response);
+      res.statusCode = 200;
+      res.send(response);
     })
     .catch((err) => {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end({
-        message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+      res.statusCode = 500;
+      res.send({
+        message: err.message || 'Some error occurred while creating the User.',
       });
     });
 }
@@ -27,14 +26,13 @@ export function createUserController(req: Request, res: Response) {
 export function getUsersController(req: Request, res: Response) {
   getUsersService()
     .then((response) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(response);
+      res.statusCode = 200;
+      res.send(response);
     })
     .catch((err) => {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end({
-        message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+      res.statusCode = 500;
+      res.send({
+        message: err.message || 'Some error occurred while getting the users.',
       });
     });
 }
@@ -42,14 +40,14 @@ export function getUsersController(req: Request, res: Response) {
 export function getUserByIdController(req: Request, res: Response) {
   getUserByIdService(req.params.id)
     .then((response) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(response);
+      res.statusCode = 200;
+      res.send(response);
     })
     .catch((err) => {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end({
+      res.statusCode = 500;
+      res.send({
         message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+          err.message || 'Some error occurred while getting the user by id.',
       });
     });
 }
@@ -57,14 +55,13 @@ export function getUserByIdController(req: Request, res: Response) {
 export function updateUserController(req: Request, res: Response) {
   updateUserService(req.body, req.params.id)
     .then((response) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(response);
+      res.statusCode = 200;
+      res.send(response);
     })
     .catch((err) => {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end({
-        message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+      res.statusCode = 500;
+      res.send({
+        message: err.message || 'Some error occurred while updateing the use.',
       });
     });
 }
@@ -72,14 +69,13 @@ export function updateUserController(req: Request, res: Response) {
 export function deleteUserController(req: Request, res: Response) {
   deleteUserService(req.params.id)
     .then((response) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(response);
+      res.statusCode = 200;
+      res.send(response);
     })
     .catch((err) => {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end({
-        message:
-          err.message || 'Some error occurred while creating the Tutorial.',
+      res.statusCode = 500;
+      res.send({
+        message: err.message || 'Some error occurred while deleting the user.',
       });
     });
 }
