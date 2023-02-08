@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import { isUserModel } from '../models/user-model';
+import { isArticleModel } from '../models/article-model';
 import {
-  createUserService,
-  deleteUserService,
-  getUserByIdService,
-  getUsersService,
-  updateUserService,
-  userExistByIdService,
-} from '../services/user-services';
+  createArticleService,
+  deleteArticleService,
+  getArticleByIdService,
+  getArticlesService,
+  updateArticleService,
+  articleExistByIdService,
+} from '../services/article-services';
 
-export function createUserController(req: Request, res: Response) {
-  if (!isUserModel(req.body)) {
+export function createArticleController(req: Request, res: Response) {
+  if (!isArticleModel(req.body)) {
     res.status(400).send({ message: 'Bad request' });
   } else {
-    createUserService(req.body)
+    createArticleService(req.body)
       .then((response) => {
         res.status(200).send(response);
       })
@@ -26,8 +26,8 @@ export function createUserController(req: Request, res: Response) {
   }
 }
 
-export function getUsersController(req: Request, res: Response) {
-  getUsersService()
+export function getArticlesController(req: Request, res: Response) {
+  getArticlesService()
     .then((response) => {
       res.status(200).send(response);
     })
@@ -39,13 +39,13 @@ export function getUsersController(req: Request, res: Response) {
     });
 }
 
-export function getUserByIdController(req: Request, res: Response) {
-  userExistByIdService(req.params.id)
+export function getArticleByIdController(req: Request, res: Response) {
+  articleExistByIdService(req.params.id)
     .then((exist) => {
       if (!exist) {
         res.status(400).send({ message: 'Bad request' });
       } else {
-        return getUserByIdService(req.params.id).then((response) => {
+        return getArticleByIdService(req.params.id).then((response) => {
           res.status(200).send(response);
         });
       }
@@ -58,18 +58,20 @@ export function getUserByIdController(req: Request, res: Response) {
     });
 }
 
-export function updateUserController(req: Request, res: Response) {
-  if (!isUserModel(req.body)) {
+export function updateArticleController(req: Request, res: Response) {
+  if (!isArticleModel(req.body)) {
     res.status(400).send({ message: 'Bad request' });
   } else {
-    userExistByIdService(req.params.id)
+    articleExistByIdService(req.params.id)
       .then((exist) => {
         if (!exist) {
           res.status(400).send({ message: 'Bad request' });
         } else {
-          return updateUserService(req.body, req.params.id).then((response) => {
-            res.status(200).send(response);
-          });
+          return updateArticleService(req.body, req.params.id).then(
+            (response) => {
+              res.status(200).send(response);
+            }
+          );
         }
       })
       .catch((err) => {
@@ -81,13 +83,13 @@ export function updateUserController(req: Request, res: Response) {
   }
 }
 
-export function deleteUserController(req: Request, res: Response) {
-  userExistByIdService(req.params.id)
+export function deleteArticleController(req: Request, res: Response) {
+  articleExistByIdService(req.params.id)
     .then((exist) => {
       if (!exist) {
         res.status(400).send({ message: 'Bad request' });
       } else {
-        return deleteUserService(req.params.id).then((response) => {
+        return deleteArticleService(req.params.id).then((response) => {
           res.status(200).send(response);
         });
       }
