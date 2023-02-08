@@ -67,11 +67,9 @@ export function updateArticleController(req: Request, res: Response) {
         if (!exist) {
           res.status(400).send({ message: 'Bad request' });
         } else {
-          return updateArticleService(req.body, req.params.id).then(
-            (response) => {
-              res.status(200).send(response);
-            }
-          );
+          return updateArticleService(req.body, req.params.id).then(() => {
+            res.status(200).send();
+          });
         }
       })
       .catch((err) => {
@@ -89,8 +87,8 @@ export function deleteArticleController(req: Request, res: Response) {
       if (!exist) {
         res.status(400).send({ message: 'Bad request' });
       } else {
-        return deleteArticleService(req.params.id).then((response) => {
-          res.status(200).send(response);
+        return deleteArticleService(req.params.id).then(() => {
+          res.status(200).send();
         });
       }
     })

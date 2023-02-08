@@ -1,5 +1,7 @@
 import { ArticleModel } from '../models/article-model';
-import { ArticleMongoModel } from '../mongoose-models/article-mongoose-model';
+import { ArticleMongoModel } from '../mongo-models/article-mongo-model';
+import { newGuid } from '../utils/new-guid';
+import { Document } from 'mongoose';
 
 /**
  * Create article
@@ -10,9 +12,29 @@ import { ArticleMongoModel } from '../mongoose-models/article-mongoose-model';
 export function createArticleService(
   article: ArticleModel
 ): Promise<ArticleModel> {
-  return new Promise<ArticleModel>((resolve, reject) => {
-    reject(new Error('No implemented'));
-  });
+  article.id = newGuid();
+  const articleMongoModel = new ArticleMongoModel(article);
+  return articleMongoModel.save();
+}
+
+/**
+ * Try to get article by article id. It there is not returns null
+ *
+ * @param id the id that needs to be fetched
+ * @returns article
+ */
+function tryGetArticleMongoModelByIdService(
+  id: string
+): Promise<(Document<unknown> & ArticleModel) | null> {
+  return ArticleMongoModel.find({ id: id })
+    .exec()
+    .then((result) => {
+      if (result && result.length === 1) {
+        return result[0];
+      } else {
+        return null;
+      }
+    });
 }
 
 /**
@@ -22,8 +44,12 @@ export function createArticleService(
  * @returns article
  */
 export function articleExistByIdService(id: string): Promise<boolean> {
-  return new Promise<boolean>(function (resolve, reject) {
-    reject(new Error('No implemented'));
+  return tryGetArticleMongoModelByIdService(id).then((result) => {
+    if (result) {
+      return true;
+    } else {
+      return false;
+    }
   });
 }
 
@@ -43,8 +69,12 @@ export function getArticlesService(): Promise<Array<ArticleModel>> {
  * @returns article
  */
 export function getArticleByIdService(id: string): Promise<ArticleModel> {
-  return new Promise<ArticleModel>(function (resolve, reject) {
-    reject(new Error('No implemented'));
+  return tryGetArticleMongoModelByIdService(id).then((result) => {
+    if (result) {
+      return result;
+    } else {
+      throw new Error(`Not found the entity with id: ${id}`);
+    }
   });
 }
 
@@ -59,8 +89,12 @@ export function updateArticleService(
   article: ArticleModel,
   id: string
 ): Promise<void> {
-  return new Promise<void>(function (resolve, reject) {
-    reject(new Error('No implemented'));
+  return tryGetArticleMongoModelByIdService(id).then((result) => {
+    if (result) {
+      return result.update(article).exec();
+    } else {
+      throw new Error(`Not found the entity with id: ${id}`);
+    }
   });
 }
 
@@ -71,7 +105,11 @@ export function updateArticleService(
  * @returns no response value expected for this operation
  */
 export function deleteArticleService(id: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    reject(new Error('No implemented'));
+  return tryGetArticleMongoModelByIdService(id).then((result) => {
+    if (result) {
+      return result.delete();
+    } else {
+      throw new Error(`Not found the entity with id: ${id}`);
+    }
   });
 }

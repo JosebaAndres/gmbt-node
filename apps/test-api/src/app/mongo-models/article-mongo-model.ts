@@ -3,7 +3,7 @@ import { ArticleModel } from '../models/article-model';
 
 // Setup schema
 const articleSchema = new Schema<ArticleModel>({
-  id: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
   name: { type: String, required: true },
 });
 
